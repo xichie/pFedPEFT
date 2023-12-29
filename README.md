@@ -27,4 +27,14 @@ nohup xtuner train train/llama_7b_qlora_alpaca_e3.py --work-dir /data/qjx/logad/
         - `alpaca_en_path`: 数据集路径
 - `--work-dir`: LoRA模块输出的路径
 
+# 实验
 
+我们要模拟的场景是：
+存在多个client，目前client的数量设置为3。
+- 对于每个client，按照上述的训练步骤，用自己的数据训练模型
+    - 自己的数据通过把训练数据分成3份来模拟：`data/logad/split_1/2/3.json`
+
+- 因为只有一台机器，目前只能每次训练一个client，训练H=3个epoch，得到自己的本地LoRA参数
+    - 我们这里还要copy一份本地LoRA参数，作为全局的LoRA参数
+- 3个client分别训练3个epoch后，得到了3个不同的全局LoRA参数，将这些参数加权求和（模拟server的作用），分发给每个client。
+- 重复上面的步骤T次
