@@ -25,7 +25,7 @@ from mmengine.config import ConfigDict
 pretrained_model_name_or_path = '/data/qjx/llama2-7b'
 
 # Data
-alpaca_en_path = 'data/logad/split_1.json'
+alpaca_en_path = 'data/logad/split_2.json'
 TEMPLATE = ConfigDict(
         log = dict(
         INSTRUCTION_START=(
@@ -88,7 +88,9 @@ model = dict(
         lora_alpha=16,
         lora_dropout=0.1,
         bias='none',
-        task_type='CAUSAL_LM'))
+        task_type='CAUSAL_LM'),
+    # peft_model='/data/qjx/logad/client_1/epoch_1.pth'  # 加载训练好的LoRA 
+    )
 
 #######################################################################
 #                      PART 3  Dataset & Dataloader                   #

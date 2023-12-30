@@ -4,10 +4,8 @@
 ```bash
 conda create --name xtuner-env python=3.10 -y
 source activate xtuner-env
-pip install xtuner
-# deepspeed 支持
-pip install deepspeed
-conda install mpi4py-mpich
+pip install -U 'xtuner[deepspeed]'
+pip install protobuf
 ```
 # 数据准备
 把数据放到`/data/logad/`
@@ -38,3 +36,11 @@ nohup xtuner train train/llama_7b_qlora_alpaca_e3.py --work-dir /data/qjx/logad/
     - 我们这里还要copy一份本地LoRA参数，作为全局的LoRA参数
 - 3个client分别训练3个epoch后，得到了3个不同的全局LoRA参数，将这些参数加权求和（模拟server的作用），分发给每个client。
 - 重复上面的步骤T次
+
+
+# LoRA 怎么加载
+一行代码：
+```python
+# 加载训练好的LoRA参数，注意base model参数不变
+peft_model='/data/qjx/logad/client_1/epoch_1.pth'  
+```
